@@ -1,4 +1,4 @@
-# TodoCode: HackCode 2da edición - Agencia Turística
+# Agencia Turística: Concurso TodoCode - HackCode 2da edición
 
 Proyecto inspirado por concurso de TodoCode: HackCode 2da edición ❤️, video: https://www.youtube.com/watch?v=Hrisnif-I9I
 
