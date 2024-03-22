@@ -1,0 +1,5 @@
+package com.eliu.tourist.agency.touristagency.models;
+
+public class PaymentAccount {
+
+}
