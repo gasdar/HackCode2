@@ -3,6 +3,8 @@ package com.eliu.tourist.agency.touristagency.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,7 @@ public class Address {
     private Integer number;
 
     @OneToMany(mappedBy="address")
+    @JsonIgnoreProperties({"address", "hibernateLazyInitializer", "handler"})
     private List<Person> people;
 
     public Address() {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,12 +42,16 @@ public class Person {
     
     @ManyToOne
     @JoinColumn(name="address_id")
+    @JsonIgnoreProperties({"people", "hibernateLazyInitializer", "handler"})
     private Address address;
 
     @ManyToOne
     @JoinColumn(name="nationality_id")
+    @JsonIgnoreProperties({"people", "hibernateLazyInitializer", "handler"})
     private Nationality nationality;
 
+    @OneToOne(mappedBy="person")
+    @JsonIgnoreProperties({"person", "hibernateLazyInitializer", "handler"})
     private User user;
 
     private List<PaymentAccount> paymentAccounts;
@@ -217,5 +224,20 @@ public class Person {
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "{id=" + id +
+                ", name=" + name +
+                ", lastname=" + lastname +
+                ", pid=" + pid +
+                ", dataOfBirth=" + dataOfBirth +
+                ", phone=" + phone +
+                ", emailAddress=" + emailAddress +
+                ", address=" + address +
+                ", nationality=" + nationality + "}";
+    }
+
+    
     
 }
