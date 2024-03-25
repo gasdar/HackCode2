@@ -11,13 +11,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="roles")
-public class Role {
+@Table(name="payment_methods")
+public class PaymentMethod {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,21 +26,29 @@ public class Role {
 
     @Column(unique=true)
     @IsRequired
-    @Size(min=7)
+    @Size(min=8, max=25)
     private String name;
 
-    @ManyToMany(mappedBy="roles")
-    @JsonIgnoreProperties({"roles", "hibernateLazyInitializer", "handler"})
-    private List<User> users;
+    private Float commission;
 
-    public Role() {
-        users = new ArrayList<>();
+    @OneToMany(mappedBy="paymentMethod")
+    @JsonIgnoreProperties({"paymentMethod", "hibernateLazyInitializer", "handler"})
+    private List<PaymentAccount> paymentAccounts;
+
+    public PaymentMethod() {
+        paymentAccounts = new ArrayList<>();
     }
 
-    public Role(@Size(min = 7) String name, List<User> users) {
+    public PaymentMethod(@Size(min = 8, max = 25) String name, Float commission, List<PaymentAccount> paymentAccounts) {
         this();
         this.name = name;
-        this.users = users;
+        this.commission = commission;
+        this.paymentAccounts = paymentAccounts;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.commission = 0F;
     }
 
     public Short getId() {
@@ -58,18 +67,27 @@ public class Role {
         this.name = name;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public Float getCommission() {
+        return commission;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setCommission(Float commission) {
+        this.commission = commission;
+    }
+
+    public List<PaymentAccount> getPaymentAccounts() {
+        return paymentAccounts;
+    }
+
+    public void setPaymentAccounts(List<PaymentAccount> paymentAccounts) {
+        this.paymentAccounts = paymentAccounts;
     }
 
     @Override
     public String toString() {
         return "{id=" + id +
-                ", name=" + name + "}";
+                ", name=" + name +
+                ", commission=" + commission + "}";
     }
 
     @Override
@@ -78,6 +96,7 @@ public class Role {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((commission == null) ? 0 : commission.hashCode());
         return result;
     }
 
@@ -89,7 +108,7 @@ public class Role {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Role other = (Role) obj;
+        PaymentMethod other = (PaymentMethod) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -100,7 +119,12 @@ public class Role {
                 return false;
         } else if (!name.equals(other.name))
             return false;
+        if (commission == null) {
+            if (other.commission != null)
+                return false;
+        } else if (!commission.equals(other.commission))
+            return false;
         return true;
     }
-
+    
 }

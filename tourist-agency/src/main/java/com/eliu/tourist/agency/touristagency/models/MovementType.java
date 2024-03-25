@@ -16,8 +16,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="nationalities")
-public class Nationality {
+@Table(name="movement_types")
+public class MovementType {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,21 +25,21 @@ public class Nationality {
 
     @Column(unique=true)
     @IsRequired
-    @Size(min=4)
-    private String country;
+    @Size(min=12)
+    private String name;
 
-    @OneToMany(mappedBy="nationality")
-    @JsonIgnoreProperties({"nationality", "hibernateLazyInitializer", "handler"})
-    private List<Person> people;
+    @OneToMany(mappedBy="movementType")
+    @JsonIgnoreProperties({"movementType", "hibernateLazyInitializer", "handler"})
+    private List<Movement> movements;
 
-    public Nationality() {
-        people = new ArrayList<>();
+    public MovementType() {
+        movements = new ArrayList<>();
     }
 
-    public Nationality(@Size(min = 4) String country, List<Person> people) {
+    public MovementType(@Size(min = 12) String name, List<Movement> movements) {
         this();
-        this.country = country;
-        this.people = people;
+        this.name = name;
+        this.movements = movements;
     }
 
     public Short getId() {
@@ -50,26 +50,26 @@ public class Nationality {
         this.id = id;
     }
 
-    public String getCountry() {
-        return country;
+    public String getName() {
+        return name;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Person> getPeople() {
-        return people;
+    public List<Movement> getMovements() {
+        return movements;
     }
 
-    public void setPeople(List<Person> people) {
-        this.people = people;
+    public void setMovements(List<Movement> movements) {
+        this.movements = movements;
     }
 
     @Override
     public String toString() {
         return "{id=" + id +
-                ", country=" + country + "}";
+                ", name=" + name + "}";
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Nationality {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((country == null) ? 0 : country.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 
@@ -89,16 +89,16 @@ public class Nationality {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Nationality other = (Nationality) obj;
+        MovementType other = (MovementType) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (country == null) {
-            if (other.country != null)
+        if (name == null) {
+            if (other.name != null)
                 return false;
-        } else if (!country.equals(other.country))
+        } else if (!name.equals(other.name))
             return false;
         return true;
     }

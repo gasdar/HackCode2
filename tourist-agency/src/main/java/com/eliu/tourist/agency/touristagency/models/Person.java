@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.eliu.tourist.agency.touristagency.validations.IsRequired;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -13,8 +14,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="people")
@@ -24,38 +28,55 @@ public class Person {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @IsRequired
+    @Size(min=3, max=20)
     private String name;
 
+    @IsRequired
+    @Size(min=3, max=20)
     private String lastname;
 
     // Este campo es el DNI, que en inglés sería id, pero, como ya existe este atributo
     // en la clase, se crea el campo: pid (Personal Identity Document)
     @Column(unique=true)
+    @IsRequired
+    @Size(min=7, max=15)
     private String pid;
     
+    @NotNull
     private Date dataOfBirth;
     
+    @IsRequired
+    @Size(min=9, max=12)
     private String phone;
     
     @Column(unique=true)
+    @IsRequired
     private String emailAddress;
     
     @ManyToOne
     @JoinColumn(name="address_id")
     @JsonIgnoreProperties({"people", "hibernateLazyInitializer", "handler"})
+    @NotNull
     private Address address;
 
     @ManyToOne
     @JoinColumn(name="nationality_id")
     @JsonIgnoreProperties({"people", "hibernateLazyInitializer", "handler"})
+    @NotNull
     private Nationality nationality;
 
     @OneToOne(mappedBy="person")
     @JsonIgnoreProperties({"person", "hibernateLazyInitializer", "handler"})
+    @NotNull
     private User user;
 
+    @OneToMany(mappedBy="person")
+    @JsonIgnoreProperties({"person", "hibernateLazyInitializer", "handler"})
     private List<PaymentAccount> paymentAccounts;
-
+    
+    @OneToMany(mappedBy="person")
+    @JsonIgnoreProperties({"person", "hibernateLazyInitializer", "handler"})
     private List<TouristPackage> touristPackages;
 
     public Person() {
@@ -63,9 +84,10 @@ public class Person {
         touristPackages = new ArrayList<>();
     }
 
-    public Person(String name, String lastname, String pid, Date dataOfBirth, String phone, String emailAddress,
-            Address address, Nationality nationality, User user, List<PaymentAccount> paymentAccounts,
-            List<TouristPackage> touristPackages) {
+    public Person(@Size(min = 3, max = 20) String name, @Size(min = 3, max = 20) String lastname,
+            @Size(min = 7, max = 15) String pid, @NotNull Date dataOfBirth, @Size(min = 9, max = 12) String phone,
+            String emailAddress, @NotNull Address address, @NotNull Nationality nationality, @NotNull User user,
+            List<PaymentAccount> paymentAccounts, List<TouristPackage> touristPackages) {
         this();
         this.name = name;
         this.lastname = lastname;
@@ -235,7 +257,9 @@ public class Person {
                 ", phone=" + phone +
                 ", emailAddress=" + emailAddress +
                 ", address=" + address +
-                ", nationality=" + nationality + "}";
+                ", nationality=" + nationality +
+                ", paymentAccounts="+ paymentAccounts +
+                ", touristPackages=" + touristPackages + "}";
     }
 
     

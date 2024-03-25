@@ -3,6 +3,7 @@ package com.eliu.tourist.agency.touristagency.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.eliu.tourist.agency.touristagency.validations.IsRequired;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="addresses")
@@ -22,6 +24,8 @@ public class Address {
     private Integer id;
 
     @Column(unique=true)
+    @IsRequired
+    @Size(min=4)
     private String name;
 
     private Integer number;
@@ -34,7 +38,7 @@ public class Address {
         people = new ArrayList<>();
     }
 
-    public Address(String name, Integer number, List<Person> people) {
+    public Address(@Size(min = 4) String name, Integer number, List<Person> people) {
         this();
         this.name = name;
         this.number = number;
