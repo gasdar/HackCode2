@@ -16,8 +16,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="service_types")
-public class ServiceType {
+@Table(name="positions")
+public class Position {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,26 +25,21 @@ public class ServiceType {
 
     @Column(unique=true)
     @IsRequired
-    @Size(min=15)
+    @Size(min=12)
     private String name;
-    
-    @IsRequired
-    @Size(min=15)
-    private String description;
 
-    @OneToMany(mappedBy="serviceType")
-    @JsonIgnoreProperties({"serviceType", "hibernateLazyInitializer", "handler"})
-    private List<Service> services;
+    @OneToMany(mappedBy="position")
+    @JsonIgnoreProperties({"position", "hibernateLazyInitializer", "handler"})
+    private List<Employer> employers;
 
-    public ServiceType() {
-        services = new ArrayList<>();
+    public Position() {
+        employers = new ArrayList<>();
     }
 
-    public ServiceType(@Size(min = 15) String name, @Size(min = 15) String description,  List<Service> services) {
+    public Position(@Size(min = 12) String name, List<Employer> employers) {
         this();
         this.name = name;
-        this.description = description;
-        this.services = services;
+        this.employers = employers;
     }
 
     public Short getId() {
@@ -63,27 +58,18 @@ public class ServiceType {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public List<Employer> getEmployers() {
+        return employers;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setEmployers(List<Employer> employers) {
+        this.employers = employers;
     }
 
     @Override
     public String toString() {
         return "{id=" + id +
-                ", name=" + name +
-                ", description=" + description + "}";
+                ", name=" + name + "}";
     }
 
     @Override
@@ -92,7 +78,6 @@ public class ServiceType {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
         return result;
     }
 
@@ -104,7 +89,7 @@ public class ServiceType {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ServiceType other = (ServiceType) obj;
+        Position other = (Position) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -114,11 +99,6 @@ public class ServiceType {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
-            return false;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
             return false;
         return true;
     }

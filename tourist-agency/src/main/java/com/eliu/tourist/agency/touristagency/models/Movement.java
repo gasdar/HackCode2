@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -34,6 +36,7 @@ public class Movement {
     private Double movementAmount;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date movementDate;
 
     @ManyToOne

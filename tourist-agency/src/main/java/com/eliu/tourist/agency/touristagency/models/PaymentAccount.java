@@ -42,10 +42,10 @@ public class PaymentAccount {
     private Double salary;
 
     @ManyToOne
-    @JoinColumn(name="person_id")
+    @JoinColumn(name="client_id")
     @JsonIgnoreProperties({"paymentAccounts", "hibernateLazyInitializer", "handler"})
     @NotNull
-    private Person person;
+    private Client client;
     
     @ManyToOne
     @JoinColumn(name="payment_method_id")
@@ -62,12 +62,12 @@ public class PaymentAccount {
     }
 
     public PaymentAccount(@Size(min = 8, max = 35) String accountName, @Size(min = 5, max = 20) String pinpass,
-            Double salary, @NotNull Person person, @NotNull PaymentMethod paymentMethod, List<Movement> movements) {
+            Double salary, @NotNull Client client, @NotNull PaymentMethod paymentMethod, List<Movement> movements) {
         this();
         this.accountName = accountName;
         this.pinpass = pinpass;
         this.salary = salary;
-        this.person = person;
+        this.client = client;
         this.paymentMethod = paymentMethod;
         this.movements = movements;
     }
@@ -109,12 +109,12 @@ public class PaymentAccount {
         this.salary = salary;
     }
 
-    public Person getPerson() {
-        return person;
+    public Client getClient() {
+        return client;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public PaymentMethod getPaymentMethod() {

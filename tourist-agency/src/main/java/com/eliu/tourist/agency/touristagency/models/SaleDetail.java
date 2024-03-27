@@ -1,6 +1,7 @@
 package com.eliu.tourist.agency.touristagency.models;
 
 import com.eliu.tourist.agency.touristagency.validations.IsRequired;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +22,9 @@ public class SaleDetail {
 
     @IsRequired
     private String serviceName;
+
+    @IsRequired
+    private String serviceDescription;
     
     @NotNull
     private Double serviceCost;
@@ -33,15 +37,17 @@ public class SaleDetail {
 
     @ManyToOne
     @JoinColumn(name="sale_id")
+    @JsonIgnoreProperties({"sailDetails", "hibernateLazyInitializer", "handler"})
     @NotNull
     private Sale sale;
 
     public SaleDetail() {
     }
 
-    public SaleDetail(String serviceName, @NotNull Double serviceCost, @NotNull Integer quantity, @NotNull Double total,
+    public SaleDetail(String serviceName, String serviceDescription,@NotNull Double serviceCost, @NotNull Integer quantity, @NotNull Double total,
             @NotNull Sale sale) {
         this.serviceName = serviceName;
+        this.serviceDescription = serviceDescription;
         this.serviceCost = serviceCost;
         this.quantity = quantity;
         this.total = total;
@@ -62,6 +68,14 @@ public class SaleDetail {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
 
     public Double getServiceCost() {
@@ -100,6 +114,7 @@ public class SaleDetail {
     public String toString() {
         return "{id=" + id +
                 ", serviceName=" + serviceName +
+                ", serviceDescription=" + serviceDescription +
                 ", serviceCost=" + serviceCost +
                 ", quantity=" + quantity +
                 ", total=" + total + "}";
@@ -111,8 +126,6 @@ public class SaleDetail {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((serviceName == null) ? 0 : serviceName.hashCode());
-        result = prime * result + ((serviceCost == null) ? 0 : serviceCost.hashCode());
-        result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
         result = prime * result + ((total == null) ? 0 : total.hashCode());
         return result;
     }
@@ -135,16 +148,6 @@ public class SaleDetail {
             if (other.serviceName != null)
                 return false;
         } else if (!serviceName.equals(other.serviceName))
-            return false;
-        if (serviceCost == null) {
-            if (other.serviceCost != null)
-                return false;
-        } else if (!serviceCost.equals(other.serviceCost))
-            return false;
-        if (quantity == null) {
-            if (other.quantity != null)
-                return false;
-        } else if (!quantity.equals(other.quantity))
             return false;
         if (total == null) {
             if (other.total != null)

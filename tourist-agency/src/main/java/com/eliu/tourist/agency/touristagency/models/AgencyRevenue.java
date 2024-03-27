@@ -3,6 +3,7 @@ package com.eliu.tourist.agency.touristagency.models;
 import java.util.Date;
 
 import com.eliu.tourist.agency.touristagency.validations.IsRequired;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -22,6 +25,7 @@ public class AgencyRevenue {
     private Long id;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date revenueDate;
 
     @NotNull
@@ -32,6 +36,7 @@ public class AgencyRevenue {
 
     @OneToOne
     @JoinColumn(name="sale_id")
+    @JsonIgnoreProperties({"agencyRevenue", "hibernateLazyInitializer", "handler"})
     @NotNull
     private Sale sale;
 

@@ -15,6 +15,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -26,6 +28,7 @@ public class Sale {
     private Long id;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date saleDate;
 
     @IsRequired
